@@ -58,8 +58,9 @@ public class StudentServiceImpl implements StudentService {
 	//fixing SQL injection vulnerability
 	
 	@Override
-	public Student getStudentById(Long id) {
-		return studentRepository.findById(id).get();
+	public Student getStudentById(String id) {
+		Long studentId = Long.valueOf(id);
+		return studentRepository.findById(studentId).orElse(null);
 	}
 
 	@Override
