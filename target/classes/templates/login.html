@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="ISO-8859-1">
-    <title>Student Management System - Login</title>
+    <title>Student Management System</title>
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -20,14 +20,14 @@
 
 </nav>
 
-<div class ="container">
-    <div class = "row">
+<div class="container">
+    <div class="row">
         <h1> Register </h1>
     </div>
 
-    <div class = "row">
-        <div class = "col-lg-3">
-            <a th:href = "@{/students/new}" class = "btn btn-primary btn-sm mb-3"> Login</a>
+    <div class="row">
+        <div class="col-lg-3">
+            <a th:href="@{/students/new}" class="btn btn-primary btn-sm mb-3" id="login-button"> Login</a>
         </div>
     </div>
 
@@ -42,22 +42,41 @@
     <script>
         document.querySelector('#login-form').addEventListener('submit', async event => {
             event.preventDefault();
-            const [username, password] = event.target;
-            console.log({username, password})
+            const [usernameInput, passwordInput] = event.target.elements;
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+            
+            if (username.trim() === '' || password.trim() === '') {
+                alert('For login please enter both username and password.');
+                return;
+            }
+            
             const loginResult = await fetch('/auth/signin', {
                 method: 'POST',
                 body: JSON.stringify({
-                    username: username.value,
-                    password: password.value
+                    username: username,
+                    password: password
                 }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
-            console.log({loginResult});
-        })
+            
+            console.log({ loginResult });
+        });
+        
+        document.querySelector('#login-button').addEventListener('click', event => {
+            const usernameInput = document.querySelector('#username-input');
+            const passwordInput = document.querySelector('#password-input');
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+            
+            if (username.trim() === '' || password.trim() === '') {
+                event.preventDefault();
+                alert('For login please enter both username and password.');
+            }
+        });
     </script>
-
 </div>
 </body>
 </html>
